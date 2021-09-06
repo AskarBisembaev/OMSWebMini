@@ -1,3 +1,3 @@
 # OMSWebMini
 
-Simple ASP.NET Core 3.1 Web Api Sample
+Simple ASP.NET Core 5.0 Web Api Sample
