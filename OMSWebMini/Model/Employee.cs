@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace OMSWebMini
+namespace OMSWebMini.Model
 {
     public partial class Employee
     {

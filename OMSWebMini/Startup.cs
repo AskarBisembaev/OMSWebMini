@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OMSWebMini.services;
 
 namespace OMSWebMini
 {
@@ -31,6 +32,7 @@ namespace OMSWebMini
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "OMSWebMini", Version = "v1" });
 			});
+			services.AddSingleton<ICategorySevice, CategoryServices>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
