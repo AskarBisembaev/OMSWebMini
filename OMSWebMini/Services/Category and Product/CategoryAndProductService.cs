@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OMSWebMini.services
+namespace OMSWebMini.Services
 {
-	public class CategoryServices : ICategorySevice
+	public class CategoryAndProductService : ICategoryAndProductService
 	{
 			public IEnumerable<Category> GetCategories()
 			{
@@ -15,7 +15,7 @@ namespace OMSWebMini.services
 				return categories;
 			}
 
-			public IEnumerable<Product> GetProduct(int id)
+			public IEnumerable<Product> GetProductInCategory(int id)
 			{
 				var context = new NorthwindContext();
 				var products = context.Products.ToList();

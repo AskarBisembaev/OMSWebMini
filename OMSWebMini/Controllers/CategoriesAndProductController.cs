@@ -4,31 +4,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OMSWebMini.services;
+using OMSWebMini.Services;
 
 namespace OMSWebMini.Controllers
 {
 	[ApiController]
 	public class CategoryAndProductController : ControllerBase
 	{
-		ICategorySevice _service3;
-		public CategoryAndProductController(ICategorySevice service)
+		ICategoryAndProductService _service;
+		public CategoryAndProductController(ICategoryAndProductService service)
 		{
-			_service3 = service;
+			_service = service;
 		}
 
 		[HttpGet]
 		[Route("api/[controller]/category")]
 		public List<Category> GetCategories()
 		{
-			return _service3.GetCategories().ToList();
+			return _service.GetCategories().ToList();
 		}
 
 		[HttpGet]
-		[Route("api/[controller]/product")]
-		public List<Product> GetProduct(int id)
+		[Route("api/[controller]/product in category")]
+		public List<Product> GetProductInCategory(int id)
 		{
-			return _service3.GetProduct(id).ToList();
+			return _service.GetProductInCategory(id).ToList();
 		}
 	}
 }
