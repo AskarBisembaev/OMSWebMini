@@ -7,31 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OMSWebMini.Data;
 using OMSWebMini.Model;
-using OMSWebMini.Services;
 
 namespace OMSWebMini.Controllers
 {
-    [ApiController]
-    public class EmployeesController : ControllerBase
-    {
-		IEmployeeService _service;
-		public EmployeesController(IEmployeeService service)
+	[ApiController]
+	public class EmployeesController : ControllerBase
+	{
+		private readonly NorthwindContext _context;
+		public EmployeesController(NorthwindContext context)
 		{
-			_service = service;
+			_context = context;
 		}
 
 		[HttpGet]
-		[Route("api/[controller]/employees")]
-		public List<Employee> GetEmployees()
+		[Route("api/[controller]/GetEmployeeAsync")]
+		public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
 		{
-			return _service.GetEmployees().ToList();
-		}
-
-		[HttpGet]
-		[Route("api/[controller]/identidied employee")]
-		public List<Employee> GetEmployee(int id)
-		{
-			return _service.GetIdentidiedEmployee(id).ToList();
+			return await _context.Employees.Select(e => new Employee
+			{
+				EmployeeId = e.EmployeeId,
+				FirstName = e.FirstName,
+				LastName = e.LastName,
+				HomePhone = e.HomePhone
+			}).ToListAsync();
 		}
 	}
 }

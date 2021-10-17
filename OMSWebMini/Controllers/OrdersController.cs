@@ -5,23 +5,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OMSWebMini.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace OMSWebMini.Controllers
 {
 	[ApiController]
 	public class OrdersController : ControllerBase
 	{
-		IOrderService _service;
-		public OrdersController(IOrderService service)
+		private readonly NorthwindContext _context;
+		public OrdersController(NorthwindContext context)
 		{
-			_service = service;
+			_context = context;
 		}
+
 		[HttpGet]
-	[Route("api/[controller]/orders")]
-		public List<Order> GetOrders()
+		[Route("api/[controller]/GetOrdersAsync")]
+		public async Task<ActionResult<IEnumerable<Order>>> GetEmployee()
 		{
-			return _service.GetOrders().ToList();
+			return await _context.Orders.Select(o => new Order
+			{
+				OrderId = o.OrderId,
+				OrderDate = o.OrderDate,
+				CustomerId = o.CustomerId,
+				EmployeeId = o.EmployeeId
+			}).ToListAsync();
 		}
+
 	}
 }
