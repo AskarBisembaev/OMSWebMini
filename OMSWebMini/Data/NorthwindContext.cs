@@ -69,7 +69,7 @@ namespace OMSWebMini.Data
 
                 entity.Property(e => e.Country).HasMaxLength(15);
 
-                entity.Property(e => e.Extension).HasMaxLength(4);
+                //entity.Property(e => e.Extension).HasMaxLength(7);
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
@@ -96,10 +96,10 @@ namespace OMSWebMini.Data
 
                 entity.Property(e => e.TitleOfCourtesy).HasMaxLength(25);
 
-                entity.HasOne(d => d.ReportsToNavigation)
-                    .WithMany(p => p.InverseReportsToNavigation)
-                    .HasForeignKey(d => d.ReportsTo)
-                    .HasConstraintName("FK_Employees_Employees");
+                //entity.HasOne(d => d.ReportsToNavigation)
+                //    .WithMany(p => p.InverseReportsToNavigation)
+                //    .HasForeignKey(d => d.ReportsTo)
+                //    .HasConstraintName("FK_Employees_Employees");
             });
 
             modelBuilder.Entity<Order>(entity =>

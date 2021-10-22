@@ -21,7 +21,7 @@ namespace OMSWebMini.Controllers
 
 		[HttpGet]
 		[Route("api/[controller]/GetEmployeeAsync")]
-		public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
+		public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
 		{
 			return await _context.Employees.Select(e => new Employee
 			{
@@ -31,5 +31,42 @@ namespace OMSWebMini.Controllers
 				HomePhone = e.HomePhone
 			}).ToListAsync();
 		}
+
+		[HttpGet]
+		[Route("api/[controller]/GetEmployeeID")]
+		public async Task<ActionResult<Employee>> GetEmployee(int id)
+		{
+			var employee = await _context.Employees.FindAsync(id);
+			if (employee == null)
+			{
+				return NotFound();
+			}
+			return employee;
+		}
+
+
+		[HttpPost]
+		[Route("api/[controller]/EmployeePost")]
+		public async Task<ActionResult<Employee>> PostEmployee(Employee employees)
+		{
+			Employee employee = new Employee()
+			{
+				FirstName = employees.FirstName,
+				LastName = employees.LastName
+			};
+			_context.Employees.Add(employees);
+			await _context.SaveChangesAsync();
+			return CreatedAtAction(nameof(GetEmployees),
+				new
+				{
+					id = employee.EmployeeId
+				},
+				employee);
+		}
+
+
+
+
+
 	}
 }
