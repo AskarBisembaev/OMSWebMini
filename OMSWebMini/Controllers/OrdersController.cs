@@ -20,7 +20,7 @@ namespace OMSWebMini.Controllers
 
 		[HttpGet]
 		[Route("api/[controller]/GetOrdersAsync")]
-		public async Task<ActionResult<IEnumerable<Order>>> GetEmployee()
+		public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
 		{
 			return await _context.Orders.Select(o => new Order
 			{
@@ -31,5 +31,42 @@ namespace OMSWebMini.Controllers
 			}).ToListAsync();
 		}
 
+		[HttpGet]
+		[Route("api/[controller]/GetOrdersWithID")]
+		public async Task<ActionResult<Order>> GetOrder(int id)
+		{
+			var order = await _context.Orders
+			   .Where(o => o.OrderId == id)
+			   .FirstOrDefaultAsync();
+
+			if (order == null) return NotFound();
+			return order;
+		}
+
+		[HttpPost]
+		[Route("api/[controller]/PostOrder")]
+		public async Task<ActionResult<Order>> PostOrder(Order order)
+		{
+			_context.Orders.Add(order);
+			await _context.SaveChangesAsync();
+			var result = CreatedAtAction(nameof(GetOrder),
+				new
+				{ Id = order.OrderId },
+				order);
+			return result;
+		}
+
+		[HttpPut]
+		[Route("api/[controller]/PutOrder")]
+		public async Task<IActionResult> PutOrder(int id, Order item)
+		{
+			if (id != item.OrderId)
+			{
+				return BadRequest();
+			}
+			_context.Entry(item).State = EntityState.Modified;
+			await _context.SaveChangesAsync();
+			return NoContent();
+		}
 	}
 }

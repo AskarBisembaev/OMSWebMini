@@ -79,5 +79,54 @@ namespace OMSWebMini.Controllers
 				},
 				category1);
 		}
+
+		[HttpPut]
+		[Route("api/[controller]/put_category")]
+		public async Task<IActionResult> PutCategory(int id, Category category)
+		{
+			if (id != category.CategoryId)
+			{
+				return BadRequest();
+			}
+
+			_context.Entry(category).State = EntityState.Modified;
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!CategoryExists(id))
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+			return NoContent();
+		}
+		private bool CategoryExists(int id)
+		{
+			return _context.Categories.Any(e => e.CategoryId == id);
+		}
+
+		[HttpDelete]
+		[Route("api/[controller]/delete_category")]
+		public async Task<ActionResult<Category>> DeleteCategory(int id)
+		{
+			var category = await _context.Categories.FindAsync(id);
+			if (category == null)
+			{
+				return NotFound();
+			}
+
+			_context.Categories.Remove(category);
+			await _context.SaveChangesAsync();
+
+			return category;
+		}
 	}
 }
