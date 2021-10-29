@@ -86,15 +86,11 @@ namespace OMSWebMini.Controllers
 			{
 				try
 				{
-					var details = _context.OrderDetails.Where(o => order.OrderId == id);
-
+					var details = _context.OrderDetails.Where(o =>order.OrderId == id);
 					_context.OrderDetails.RemoveRange(details);
-
-					_context.Orders.Remove(order);
-
-					await _context.SaveChangesAsync();
-
-					await transaction.CommitAsync();
+				_context.Orders.Remove(order);
+     		await _context.SaveChangesAsync();
+			await transaction.CommitAsync();
 				}
 				catch (Exception)
 				{
@@ -131,13 +127,12 @@ namespace OMSWebMini.Controllers
 				try
 				{
 					if (details.Count != 0) _context.OrderDetails.RemoveRange(details);
-
 					_context.Orders.RemoveRange(orders);
 					await transaction.CommitAsync();
 				}
 				catch (Exception)
 				{
-					await transaction.RollbackAsync();
+				await transaction.RollbackAsync();
 				}
 				await _context.SaveChangesAsync();
 			}
