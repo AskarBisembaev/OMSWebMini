@@ -24,5 +24,6 @@ namespace OMSWebMini
         public string ShipCountry { get; set; }
 
         public virtual Employee Employee { get; set; }
+        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

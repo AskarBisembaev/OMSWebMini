@@ -20,6 +20,7 @@ namespace OMSWebMini.Data
 
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<OrderDetails> OrderDetails { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
 
@@ -197,6 +198,38 @@ namespace OMSWebMini.Data
             });
 
            
+              modelBuilder.Entity<OrderDetails>(entity =>
+            {
+                entity.HasKey(e => new { e.OrderId, e.ProductId })
+                    .HasName("PK_Order_Details");
+
+                entity.ToTable("Order Details");
+
+                entity.HasIndex(e => e.OrderId)
+                    .HasName("OrdersOrder_Details");
+
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("ProductsOrder_Details");
+
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+                entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.UnitPrice).HasColumnType("money");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK_Order_Details_Orders");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Order_Details_Products");
+            });
 
            
             OnModelCreatingPartial(modelBuilder);

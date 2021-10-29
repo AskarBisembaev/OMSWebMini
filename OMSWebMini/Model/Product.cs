@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OMSWebMini.Model;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -17,7 +18,7 @@ namespace OMSWebMini
         public short? UnitsOnOrder { get; set; }
         public short? ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
-
+        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
         //public virtual Category Category { get; set; }
     }
 }
