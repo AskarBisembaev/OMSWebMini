@@ -28,7 +28,6 @@ namespace OMSWebMini
 		public void ConfigureServices(IServiceCollection services)
 		{
 
-
 			string connection = Configuration.GetConnectionString("OMSDatabase");
 
 			services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connection));
